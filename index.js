@@ -1,8 +1,10 @@
 const express = require('express');
-const app = express()
+const app = express();
+require('dotenv').config();
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const ObjectId = require('mongodb').ObjectId;
+
 
 app.use(cors());
 app.use(express.json());
@@ -24,20 +26,29 @@ client.connect(err => {
     })
   })
 
-  // For testing
-  // app.get('/addEvents', (req, res) => {
-  //   eventsCollection.insertMany([{name: 'zzz'}, {name: 'aaa'}], (err, result) => {
-  //     console.log(err, result);
-  //   })
-  // })
+  app.get('/events/:id', (req, res) => {
+    const id = req.params.id;
+    eventsCollection.find({_id: ObjectId(id)})
+    .toArray((err, documents) => {
+      // console.log(documents);
+      res.send(documents[0]);
+    })
+  })
 
-  // will use later
+    // will use later
   // app.post('/addEvents', (req, res) => {
   //   const events = req.body;
   //   // console.log(events);
   //   eventsCollection.insertMany(events, (err, result) => {
   //     // console.log(err, result);
   //     res.send({count: result});
+  //   })
+  // })
+
+  // For testing
+  // app.get('/addEvents', (req, res) => {
+  //   eventsCollection.insertMany([{name: 'zzz'}, {name: 'aaa'}], (err, result) => {
+  //     console.log(err, result);
   //   })
   // })
 
