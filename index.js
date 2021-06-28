@@ -14,14 +14,13 @@ const port = 5000;
 // console.log(process.env.DB_NAME);
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mps7w.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(err => {
+client.connect(err => {  // console.log(err)
   const eventsCollection = client.db("superheroNetwork").collection("events");
-  // console.log(err);
+  const registrationCollection = client.db("superheroNetwork").collection("events");
 
   app.get('/events', (req, res) => {
     eventsCollection.find({})
-    .toArray((err, documents) => {
-      // console.log(documents);
+    .toArray((err, documents) => {  // console.log(documents)
       res.send(documents);
     })
   })
@@ -29,13 +28,19 @@ client.connect(err => {
   app.get('/events/:id', (req, res) => {
     const id = req.params.id;
     eventsCollection.find({_id: ObjectId(id)})
-    .toArray((err, documents) => {
-      // console.log(documents);
+    .toArray((err, documents) => {   // console.log(documents)
       res.send(documents[0]);
     })
   })
 
-    // will use later
+  app.post('/addRegistration', (req, res) => {
+    const events = req.body;  // console.log(events)
+    eventsCollection.insertMany(events, (err, result) => {  // console.log(err, result)
+      res.send({count: result});
+    })
+  })
+
+  // will use later
   // app.post('/addEvents', (req, res) => {
   //   const events = req.body;
   //   // console.log(events);
