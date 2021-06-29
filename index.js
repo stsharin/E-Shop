@@ -16,27 +16,27 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {  // console.log(err)
   const eventsCollection = client.db("superheroNetwork").collection("events");
-  const registrationCollection = client.db("superheroNetwork").collection("events");
+  const registrationCollection = client.db("superheroNetwork").collection("registration");
 
   app.get('/events', (req, res) => {
     eventsCollection.find({})
-    .toArray((err, documents) => {  // console.log(documents)
-      res.send(documents);
-    })
+      .toArray((err, documents) => {  // console.log(documents)
+        res.send(documents);
+      })
   })
 
   app.get('/events/:id', (req, res) => {
     const id = req.params.id;
-    eventsCollection.find({_id: ObjectId(id)})
-    .toArray((err, documents) => {   // console.log(documents)
-      res.send(documents[0]);
-    })
+    eventsCollection.find({ _id: ObjectId(id) })
+      .toArray((err, documents) => {   // console.log(documents)
+        res.send(documents[0]);
+      })
   })
 
   app.post('/addRegistration', (req, res) => {
-    const events = req.body;  // console.log(events)
-    eventsCollection.insertMany(events, (err, result) => {  // console.log(err, result)
-      res.send({count: result});
+    const registration = req.body;
+    registrationCollection.insertOne(registration, (err, result) => {
+      res.send({ count: result.insertedCount });
     })
   })
 
