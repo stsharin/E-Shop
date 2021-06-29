@@ -40,6 +40,21 @@ client.connect(err => {  // console.log(err)
     })
   })
 
+  app.get('/registrations', (req, res) => {
+    registrationCollection.find({})
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
+  })
+
+  app.get('/registrations/:email', (req, res) => {
+    const email = req.params.email;
+    registrationCollection.find({email: email})
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
+  })
+
   // will use later
   // app.post('/addEvents', (req, res) => {
   //   const events = req.body;
