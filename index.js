@@ -55,6 +55,13 @@ client.connect(err => {  // console.log(err)
     })
   })
 
+  app.post('/addEvent', (req, res) => {
+    const event = req.body;
+    eventsCollection.insertOne(event, (err, result) => {
+      res.send({ count: result.insertedCount });
+    })
+  })
+
   // will use later
   // app.post('/addEvents', (req, res) => {
   //   const events = req.body;
