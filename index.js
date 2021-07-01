@@ -62,7 +62,7 @@ client.connect(err => {  // console.log(err)
     })
   })
 
-  app.delete('/delete/:id', (req, res)=>{
+  app.delete('/deleteRegistration/:id', (req, res)=>{
     const id = req.params.id;
     registrationCollection.deleteOne({_id: ObjectId(id)}, (result)=> {
       console.log(result.deleteCount);
