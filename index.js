@@ -64,8 +64,12 @@ client.connect(err => {  // console.log(err)
 
   app.delete('/deleteRegistration/:id', (req, res)=>{
     const id = req.params.id;
-    registrationCollection.deleteOne({_id: ObjectId(id)}, (result)=> {
-      console.log(result.deleteCount);
+    registrationCollection.deleteOne({_id: ObjectId(id)}, (err)=> {
+      // console.log(result.deleteCount);
+      // res.send({count: result.deleteCount})
+      if(!err){
+        res.send({count: 1})
+      }
     })
   })
 
